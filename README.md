@@ -1,2 +1,6 @@
 # kawakudari-nes
- kawakudari game for nes
+Kawakudari game for nes  
+
+original game is Kawakudari for IchigoJam  
+http://ichigojam.net/  
+
