@@ -1,10 +1,10 @@
-	.inesprg 1 ; program bank cnt
+  .inesprg 1 ; program bank cnt
   .ineschr 1 ; chr bank cnt
   .inesmir 1 ; mirror 0:horizontal 1:vertical
   .inesmap 0 ; mapper no
 
-VRAM_DATA	equ	$2007			; vram data register
-VRAM_AD	  equ	$2006			; vram address register
+VRAM_DATA equ $2007     ; vram data register
+VRAM_AD   equ $2006     ; vram address register
 CTRL1     equ $4016     ; controller 1
 
 SPRITE    equ $0300     ; on RAM for OAM
@@ -17,8 +17,8 @@ SP_CAT    equ SPRITE + 63 * 4 ; cat
 SP_ENEMY  equ SPRITE
 LAST_ENEMY equ 30 * 4
 
-	.bank 1
-	.org $fffa
+  .bank 1
+  .org $fffa
   .dw 0     ; VBlank int
   .dw reset ; reset int
   .dw 0     ; break int
@@ -168,13 +168,13 @@ screen_off:
 
 screen_on:
   ; screen on
-  ;lda	#$10 ; BG
-  ;lda	#$08 ; SPRITE 
+  ;lda  #$10 ; BG
+  ;lda  #$08 ; SPRITE 
   lda #%00000000 ;#%VPHBSINN (vBlank int, PPU type slave, sprite size 8x16, bg no, sprite no, vram +32, main screen(2bit))
-	sta	$2000
+  sta  $2000
   ;   #%BGRSBMmC (B:blue, G:green, R:red, S:sprite, BG:bg, M:left limit sprite, m:left limit BG, C:color no)
-	lda	#%00011110
-	sta	$2001
+  lda  #%00011110
+  sta  $2001
   rts
 
 sprite_init:
@@ -231,29 +231,29 @@ sprite_dma:
   rts
 
 sound_init:
-	lda #%00001111	; 矩形波チャンネル1
-	sta $4015		; サウンドレジスタ
+  lda #%00001111  ; 矩形波チャンネル1
+  sta $4015    ; サウンドレジスタ
   rts
 
 sound_test:
   ; play SE1 (矩形波1)
   ;     DDLCVVVV (DD=duty(00: 87.5%, 01: 75%, 10: 50%, 11: 25%), L=再生時間カウンタ, C=volume fix, VVVV=volume)
-	lda #%10101111
+  lda #%10101111
   sta $4000
   ;   #%EPPPSSSS (E=sweeve, PPP=length, SSSS=shift)
-	lda #%00000000
+  lda #%00000000
   sta $4001
-	
-	; CPUのクロック周波数 / (再生周波数 * 32) - 1
-	; clock = 1.789773MHz = 1789773Hz, 440Hz ラ, 1789773/(440*32)-1 = 126.11
-	; clock = 1.789773MHz = 1789773Hz, 220Hz ラ, 1789773/(220*32)-1 = 253.23
-	; clock = 1.789773MHz = 1789773Hz, 110Hz ラ, 1789773/(110*32)-1 = 507.45
+  
+  ; CPUのクロック周波数 / (再生周波数 * 32) - 1
+  ; clock = 1.789773MHz = 1789773Hz, 440Hz ラ, 1789773/(440*32)-1 = 126.11
+  ; clock = 1.789773MHz = 1789773Hz, 220Hz ラ, 1789773/(220*32)-1 = 253.23
+  ; clock = 1.789773MHz = 1789773Hz, 110Hz ラ, 1789773/(110*32)-1 = 507.45
   ;   #%TTTTTTTT T下位3bit
-	lda #%00000000
+  lda #%00000000
   sta $4002 ; サウンドレジスタ
   ;   #%LLLLLTTT 長さL, T上位3bit
-	lda #%00001001
-	sta $4003 ; サウンドレジスタ
+  lda #%00001001
+  sta $4003 ; サウンドレジスタ
   rts
 
 sound_hit:
@@ -303,14 +303,14 @@ bg_clear:
   rts
 
 attr_clear:
-	lda	#$23
-	ldx	#$c0 ; clear area color (fill 00h) // 64byte 1byteで4x4の16ブロック(1ブロック 8x8)の属性、1blockあたり2bit(4パレットから選択)
-	jsr	vram_set
+  lda  #$23
+  ldx  #$c0 ; clear area color (fill 00h) // 64byte 1byteで4x4の16ブロック(1ブロック 8x8)の属性、1blockあたり2bit(4パレットから選択)
+  jsr  vram_set
 
   ; == 64byte $40
-	ldx	#$40
-	lda	#$0 ; attribute
-  jsr	 vram_fill
+  ldx  #$40
+  lda  #$0 ; attribute
+  jsr   vram_fill
   rts
 
 input_start1:
@@ -320,16 +320,16 @@ input_start1:
   sta CTRL1
   rts
 
-vram_set:	;	vram adrs set ;	high a reg , low x reg
-	sta	VRAM_AD		;set high
-	stx	VRAM_AD		;set low
-	rts
+vram_set:  ;  vram adrs set ;  high a reg , low x reg
+  sta  VRAM_AD    ;set high
+  stx  VRAM_AD    ;set low
+  rts
 
 vram_fill: ; fill a size x
-	sta	VRAM_DATA
-	dex
-	bne	vram_fill
-	rts
+  sta  VRAM_DATA
+  dex
+  bne  vram_fill
+  rts
 
 palette_init:
   ; set VRAM address <= $3f00
@@ -377,15 +377,15 @@ waitx:
 ; data
 palette_data:
   ; BG
-  .db	$00, $30, $00, $00
-  .db	$00, $0f, $00, $00
-  .db	$00, $0f, $00, $00
-  .db	$00, $0f, $00, $00
+  .db  $00, $30, $00, $00
+  .db  $00, $0f, $00, $00
+  .db  $00, $0f, $00, $00
+  .db  $00, $0f, $00, $00
   ; SPRITE
-  .db	$0f, $30, $00, $00
-  .db	$00, $0f, $00, $00
-  .db	$00, $0f, $00, $00
-  .db	$00, $0f, $00, $00
+  .db  $0f, $30, $00, $00
+  .db  $00, $0f, $00, $00
+  .db  $00, $0f, $00, $00
+  .db  $00, $0f, $00, $00
 
 ; chr
  .bank 2
