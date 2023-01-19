@@ -99,7 +99,7 @@ enemy:
   tax
   lda #220 ; Y
   sta SP_ENEMY + 0, x
-  lda #42 ; *
+  lda #237 ; uchu-jin
   sta SP_ENEMY + 1, x
   lda #0; T
   sta SP_ENEMY + 2, x
